@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Công cụ Random</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f9; }
+        #result { font-size: 2em; color: #2c3e50; margin-top: 20px; font-weight: bold; }
+        button { padding: 10px 20px; cursor: pointer; background: #27ae60; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Máy Chọn Tên Ngẫu Nhiên</h1>
+    <textarea id="nameList" rows="5" cols="30" placeholder="Nhập tên, cách nhau bằng dấu phẩy..."></textarea><br><br>
+    <button onclick="pickRandom()">Bắt đầu chọn!</button>
+    <div id="result"></div>
+
+    <script>
+        function pickRandom() {
+            let input = document.getElementById('nameList').value;
+            let names = input.split(',').map(name => name.trim());
+            if(names[0] === "") {
+                document.getElementById('result').innerText = "Hãy nhập tên trước đã!";
+                return;
+            }
+            let randomName = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('result').innerText = "Người may mắn là: " + randomName;
+        }
+    </script>
+</body>
+</html>
