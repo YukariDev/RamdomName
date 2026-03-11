@@ -1,15 +1,17 @@
 /* style.css */
 body {
-    padding-top: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a2e; /* Màu nền tối sang trọng */
-    color: #e9ecef;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
+  height: 100vh;    /* Ép chiều cao body bằng đúng màn hình */
+  overflow: hidden; /* Cấm mọi hành vi cuộn (cả ngang lẫn dọc) */
+  padding-top: 1px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a2e; /* Màu nền tối sang trọng */
+  color: #e9ecef;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
 }
 
 header {
@@ -31,8 +33,8 @@ nav {
     overflow: visible; 
     display: flex;
     justify-content: center; /* Đưa thanh menu ra giữa trang */
-    margin-top: 15spx; /* Cách mép trên một chút cho đẹp */
-    position: fixed;
+    margin-top: 5px; /* Cách mép trên một chút cho đẹp */
+    position: sticky;
     width: 100%;
     top: 0;
     z-index: 1000;
@@ -126,3 +128,87 @@ nav li a:hover {
   background: rgba(255, 255, 255, 0.1); /* Nền nút hơi sáng lên */
 }
 
+.page_content {
+  /* 1. Kích thước bao phủ phần lớn màn hình */
+  width: 94%;            /* Chiếm 94% chiều rộng màn hình */
+  max-width: 1400px;     /* Giới hạn lại để không quá bè trên màn hình máy tính lớn */
+  min-height: 80vh;      /* Cao bằng 80% chiều cao màn hình hiển thị */
+  
+  /* 2. Tạo khoảng đệm với viền màn hình (Căn giữa) */
+  margin: 15px;      /* Khoảng cách cực nhỏ với thanh Nav */
+
+  
+  /* 3. Khoảng cách nội dung bên trong */
+  padding: 20px;         
+  
+  /* 4. Trang trí và Bo góc */
+  background-color: #1e1e2e;
+  color: #ffffff;
+  border-radius: 20px;   /* Bo góc mềm mại hơn */
+  
+  /* 5. Căn giữa nội dung bên trong div */
+  display: flex;
+  flex-direction: column; /* Xếp nội dung theo hàng dọc */
+  justify-content: center; 
+  align-items: center;
+  
+  /* 6. Đổ bóng để tạo chiều sâu */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  
+  /* Đảm bảo padding không làm tăng kích thước tổng của div */
+  box-sizing: border-box; 
+}
+
+/* 1. Div bao quanh 2 button */
+.control_button {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  
+  /* Tuyệt chiêu ở đây: */
+  margin-bottom: auto;   /* Đẩy nội dung khác xuống dưới, đưa mình lên đỉnh */
+  padding-bottom: 20px;  /* Tạo khoảng trống với nội dung bên dưới */
+}
+
+/* 2. Định dạng chung cho cả 2 button */
+.btn {
+    padding: 12px 25px;      /* Độ rộng và cao của nút */
+    border: none;            /* Xóa viền mặc định */
+    border-radius: 8px;      /* Bo góc nhẹ cho nút */
+    color: white;            /* Màu chữ trắng */
+    font-weight: bold;       /* Chữ đậm */
+    cursor: pointer;         /* Hiện con trỏ bàn tay khi di chuột vào */
+    transition: transform 0.2s, opacity 0.2s; /* Hiệu ứng mượt mà */
+}
+
+/* 3. Màu sắc riêng cho từng nút */
+.Start {
+  background-color: #1acb34;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.Reset {
+background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;  
+}
+
+/* 4. Hiệu ứng khi di chuột vào (Hover) */
+.btn:hover {
+    opacity: 0.9;            /* Làm mờ nhẹ */
+    transform: translateY(-2px); /* Nhảy nhẹ lên trên */
+}
+
+/* 5. Hiệu ứng khi nhấn vào (Active) */
+.btn:active {
+    transform: translateY(2px);  /* Lún xuống khi bấm */
+    box-shadow: none;            /* Mất bóng đổ tạo cảm giác nút bị nhấn */
+}
