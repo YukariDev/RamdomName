@@ -18,7 +18,7 @@ items.forEach(item => {
     moveMarker(item);
   });
 
-  // 2. Hiệu ứng trượt tạm thời khi Hover (Tùy chọn - rất "Game UI")
+  // 2. Hiệu ứng trượt tạm thời khi Hover
   item.addEventListener('mouseenter', (e) => {
     moveMarker(item);
   });
@@ -32,3 +32,4 @@ document.querySelector('#nav-list').addEventListener('mouseleave', () => {
 
 // Khởi tạo vị trí ban đầu cho marker
 moveMarker(document.querySelector('nav li.active'));
+

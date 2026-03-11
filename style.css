@@ -12,6 +12,20 @@ body {
     margin: 0;
 }
 
+header {
+  width: 100%;
+  display: flex;             /* Kích hoạt Flexbox */
+  justify-content: center;    /* Căn giữa theo chiều ngang */
+  align-items: center;        /* Căn giữa theo chiều dọc */
+  padding: 20px 0;           /* Tạo khoảng trống trên dưới cho header */
+  background-color: transparent; /* Hoặc màu nền tùy chọn */
+}
+
+/* Đảm bảo nav không có margin lạ gây lệch */
+header nav {
+  margin: 0 auto;
+}
+
 /* 1. Căn giữa toàn bộ thanh Menu */
 nav {
     overflow: visible; 
@@ -111,3 +125,4 @@ nav li a:hover {
   color: #ffca28; /* Chữ đổi sang vàng */
   background: rgba(255, 255, 255, 0.1); /* Nền nút hơi sáng lên */
 }
+
