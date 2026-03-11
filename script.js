@@ -33,55 +33,64 @@ document.querySelector('#nav-list').addEventListener('mouseleave', () => {
 // Khởi tạo vị trí ban đầu cho marker
 moveMarker(document.querySelector('nav li.active'));
 
-document.addEventListener('click', (e) => {
-    const link = e.target.closest('nav a'); // Kiểm tra nếu click vào link trong nav
-    if (link) {
-        e.preventDefault(); // Chặn trình duyệt tải lại trang
-        const url = link.getAttribute('href');
-        loadPage(url);
-    }
-});
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('#nav-list a');
+    const mainContent = document.querySelector('main');
 
-async function loadPage(url) {
-    // Đảm bảo url không bị trống hoặc chỉ là "/"
-    if (url === '/' || url === '') url = 'index.html';
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Không tìm thấy trang');
-        
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        // Lấy nội dung mới
-        const newContent = doc.querySelector('main').innerHTML;
-        document.querySelector('main').innerHTML = newContent;
-
-        // Cập nhật URL thanh địa chỉ
-        window.history.pushState({}, '', url);
-        
-        updateActiveLink(url);
-    } catch (err) {
-        console.error('Lỗi GitHub Pages:', err);
-        // Nếu lỗi, cho trình duyệt tải trang kiểu truyền thống để không bị "chết" web
-        window.location.href = url; 
-    }
-}
-
-function updateActiveLink(url) {
-    const navLinks = document.querySelectorAll('#nav-list li');
-    navLinks.forEach(li => {
-        const a = li.querySelector('a');
-        if (a.getAttribute('href') === url) {
-            li.classList.add('active');
-        } else {
-            li.classList.remove('active');
-        }
+    navLinks.forEach(link => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            // Lấy đường dẫn từ thuộc tính href
+            const href = link.getAttribute('href');
+            
+            // 1. Cập nhật nội dung
+            await loadPage(href);
+            
+            // 2. Thay đổi URL trên thanh địa chỉ
+            window.history.pushState({ path: href }, '', href);
+        });
     });
-}
 
-// Xử lý khi người dùng nhấn nút Back/Forward của trình duyệt
-window.onpopstate = () => {
-    loadPage(window.location.pathname);
-};
+    // Hàm tải nội dung trang
+    async function loadPage(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Network response was not ok');
+            
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Lấy nội dung mới từ thẻ <main> của trang vừa tải
+            const newContent = doc.querySelector('main').innerHTML;
+            
+            // Cập nhật vào trang hiện tại
+            mainContent.innerHTML = newContent;
+
+            // Cập nhật lại class active cho menu
+            updateActiveLink(url);
+            
+        } catch (error) {
+            console.error('Lỗi khi tải trang:', error);
+            // Nếu lỗi (ví dụ 404 trên GitHub), chuyển trang kiểu truyền thống để dự phòng
+            window.location.href = url;
+        }
+    }
+
+    function updateActiveLink(url) {
+        document.querySelectorAll('#nav-list li').forEach(li => {
+            const a = li.querySelector('a');
+            if (a.getAttribute('href') === url) {
+                li.classList.add('active');
+            } else {
+                li.classList.remove('active');
+            }
+        });
+    }
+
+    // Xử lý nút Back/Forward của trình duyệt
+    window.addEventListener('popstate', () => {
+        loadPage(window.location.pathname.split('/').pop() || 'index.html');
+    });
+});
