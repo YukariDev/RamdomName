@@ -6,27 +6,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div class="container">
-        <h1>Random Picker</h1>
-        <textarea id="nameList" rows="5" placeholder="Nhập danh sách tên (cách nhau bởi dấu phẩy)..."></textarea>
-        <button onclick="pickRandom()">BẮT ĐẦU CHỌN</button>
-        <div id="result"></div>
-    </div>
-
-    <script>
-        function pickRandom() {
-            let input = document.getElementById('nameList').value;
-            let names = input.split(',').map(name => name.trim()).filter(n => n !== "");
-            
-            if(names.length === 0) {
-                document.getElementById('result').innerText = "Hãy nhập tên trước!";
-                return;
-            }
-            
-            let randomName = names[Math.floor(Math.random() * names.length)];
-            document.getElementById('result').innerText = "🎯 " + randomName;
-        }
-    </script>
+    <nav>
+        <ul id="nav-list">
+            <li class="active"><a href="#Home">Trang Chính</a></li>
+            <li><a href="#Setting">Cài Đặt</a></li>
+            <div id="marker"></div>
+        </ul>
+    </nav>
+    <script src="script.js"></script>
 </body>
 </html>

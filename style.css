@@ -1,5 +1,6 @@
 /* style.css */
 body {
+    padding-top: 50px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1a1a2e; /* Màu nền tối sang trọng */
     color: #e9ecef;
@@ -11,60 +12,102 @@ body {
     margin: 0;
 }
 
-.container {
-    background-color: #16213e;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #0f3460;
-    width: 90%;
-    max-width: 500px;
-}
-
-h1 {
-    color: #4ecca3;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-textarea {
+/* 1. Căn giữa toàn bộ thanh Menu */
+nav {
+    overflow: visible; 
+    display: flex;
+    justify-content: center; /* Đưa thanh menu ra giữa trang */
+    margin-top: 15spx; /* Cách mép trên một chút cho đẹp */
+    position: fixed;
     width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #0f3460;
-    background-color: #0f3460;
-    color: white;
-    font-size: 1rem;
-    resize: vertical;
-    box-sizing: border-box; /* Đảm bảo padding không làm tràn chiều rộng */
+    top: 0;
+    z-index: 1000;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 8px;
-    background-color: #4ecca3;
-    color: #1a1a2e;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+#nav-list {
+  position: relative; /* Điểm tựa cho marker */
 }
 
-button:hover {
-    background-color: #45b293;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+#marker {
+  position: absolute;
+  height: 2px;
+  width: 0;
+  background: #ffca28;
+  bottom: -15px; /* Nằm ngoài thanh điều hướng */
+  left: 0;
+  border-radius: 2px;
+  box-shadow: 0 0 15px #ffca28;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); /* Hiệu ứng trượt mượt */
+  pointer-events: none; /* Tránh cản trở việc click vào các nút */
 }
 
-#result {
-    margin-top: 25px;
-    padding: 15px;
-    font-size: 1.5rem;
-    color: #4ecca3;
-    border-top: 2px dashed #0f3460;
-    min-height: 1.5em;
+nav li {
+  position: relative; /* Làm điểm tựa cho thanh mảnh của riêng từng nút */
+}
+
+/* Hiệu ứng khi hover vào các nút khác (thanh mảnh tạm thời xuất hiện) */
+nav li:not(.active):hover::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%; 
+  height: 3px;
+  background-color: rgba(255, 202, 40, 0.5);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+@keyframes slideIn {
+  from { width: 0; opacity: 0; }
+  to { width: 40%; opacity: 1; }
+}
+
+/* 2. Thiết kế thanh Menu chính */
+nav ul {
+  display: flex;
+  list-style: none;
+  background: rgba(51, 51, 51, 0.9); /* Màu tối có chút trong suốt */
+  padding: 10px 20px;
+  border-radius: 50px; /* Bo tròn hoàn toàn hai đầu */
+  
+  /* Độ dài ban đầu bằng khoảng 1/3 trang */
+  width: 33.33%; 
+  justify-content: space-around; /* Chia đều khoảng cách các nút */
+  
+  /* Hiệu ứng chuyển động */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px); /* Làm mờ nền phía sau (rất hiện đại) */
+
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 3. Hiệu ứng khi Hover vào TOÀN BỘ thanh menu */
+nav ul:hover {
+    transform: scaleX(1.3); /* Phóng to chiều ngang lên 1.3 lần */
+
+}
+
+/* QUAN TRỌNG: Chống biến dạng chữ */
+nav ul:hover li {
+  transform: scaleX(0.77); /* Tỉ lệ nghịch (1/1.3) để chữ không bị dẹt */
+  transition: transform 0.4s;
+}
+
+/* 4. Định dạng chữ và nút */
+nav li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 15px;
+  transition: 0.3s;
+  border-radius: 20px;
+}
+
+/* 5. Hiệu ứng khi hover từng nút nhỏ */
+nav li a:hover {
+  color: #ffca28; /* Chữ đổi sang vàng */
+  background: rgba(255, 255, 255, 0.1); /* Nền nút hơi sáng lên */
 }
