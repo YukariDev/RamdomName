@@ -43,25 +43,29 @@ document.addEventListener('click', (e) => {
 });
 
 async function loadPage(url) {
+    // Đảm bảo url không bị trống hoặc chỉ là "/"
+    if (url === '/' || url === '') url = 'index.html';
+
     try {
         const response = await fetch(url);
+        if (!response.ok) throw new Error('Không tìm thấy trang');
+        
         const html = await response.text();
-
-        // Tạo một trình phân tích tạm thời để lấy nội dung <main> từ trang mới
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
+        
+        // Lấy nội dung mới
         const newContent = doc.querySelector('main').innerHTML;
-
-        // Cập nhật nội dung vào trang hiện tại
         document.querySelector('main').innerHTML = newContent;
 
-        // Thay đổi URL trên thanh địa chỉ mà không reload
+        // Cập nhật URL thanh địa chỉ
         window.history.pushState({}, '', url);
-
-        // Cập nhật trạng thái class "active" cho menu
+        
         updateActiveLink(url);
     } catch (err) {
-        console.error('Lỗi tải trang:', err);
+        console.error('Lỗi GitHub Pages:', err);
+        // Nếu lỗi, cho trình duyệt tải trang kiểu truyền thống để không bị "chết" web
+        window.location.href = url; 
     }
 }
 
