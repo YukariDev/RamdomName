@@ -39,41 +39,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navLinks.forEach(link => {
         link.addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            // Lấy đường dẫn từ thuộc tính href
             const href = link.getAttribute('href');
             
-            // 1. Cập nhật nội dung
+            // Nếu link dẫn đến trang bên ngoài, cứ để nó chạy bình thường
+            if (href.startsWith('http') || href.startsWith('#')) return;
+
+            e.preventDefault();
+            console.log("Đang cố gắng tải trang:", href);
             await loadPage(href);
-            
-            // 2. Thay đổi URL trên thanh địa chỉ
             window.history.pushState({ path: href }, '', href);
         });
     });
 
-    // Hàm tải nội dung trang
     async function loadPage(url) {
         try {
+            // Sử dụng URL tương đối trực tiếp để tránh lỗi thư mục con trên GitHub
             const response = await fetch(url);
-            if (!response.ok) throw new Error('Network response was not ok');
             
+            if (!response.ok) {
+                console.error("Fetch thất bại với trạng thái:", response.status);
+                // Nếu fetch lỗi, chuyển hướng truyền thống luôn
+                window.location.href = url;
+                return;
+            }
+
             const html = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-            
-            // Lấy nội dung mới từ thẻ <main> của trang vừa tải
-            const newContent = doc.querySelector('main').innerHTML;
-            
-            // Cập nhật vào trang hiện tại
-            mainContent.innerHTML = newContent;
+            const newContent = doc.querySelector('main');
 
-            // Cập nhật lại class active cho menu
+            if (newContent) {
+                mainContent.innerHTML = newContent.innerHTML;
+                // Nếu bạn có class riêng cho main ở mỗi trang, cập nhật nó luôn
+                mainContent.className = newContent.className; 
+                console.log("Tải nội dung thành công!");
+            }
+
             updateActiveLink(url);
-            
         } catch (error) {
-            console.error('Lỗi khi tải trang:', error);
-            // Nếu lỗi (ví dụ 404 trên GitHub), chuyển trang kiểu truyền thống để dự phòng
+            console.error('Lỗi thực thi:', error);
             window.location.href = url;
         }
     }
@@ -81,7 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateActiveLink(url) {
         document.querySelectorAll('#nav-list li').forEach(li => {
             const a = li.querySelector('a');
-            if (a.getAttribute('href') === url) {
+            const linkHref = a.getAttribute('href');
+            // So sánh tên file để bật class active
+            if (url.includes(linkHref)) {
                 li.classList.add('active');
             } else {
                 li.classList.remove('active');
@@ -89,8 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Xử lý nút Back/Forward của trình duyệt
-    window.addEventListener('popstate', () => {
-        loadPage(window.location.pathname.split('/').pop() || 'index.html');
-    });
+    window.onpopstate = () => {
+        // Lấy tên file từ URL hiện tại để load lại khi nhấn Back
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        loadPage(currentPage);
+    };
 });
